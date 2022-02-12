@@ -11,6 +11,7 @@ struct ContentView: View {
     @State var timerHandler: Timer?
     @State var count = 0
     @AppStorage("timer_value") var timerValue = 10
+    @State var showAlert = false
     
     var body: some View {
         NavigationView{
@@ -63,6 +64,10 @@ struct ContentView: View {
                     }
                 }
             }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("終了"),
+                message: Text("タイマー終了時間です"), dismissButton: .default(Text("OK")))
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
@@ -73,6 +78,9 @@ struct ContentView: View {
         
         if(timerValue - count <= 0){
             timerHandler?.invalidate()
+            
+            // タイマー終了のアラートを表示する
+            showAlert = true
         }
     }
     
